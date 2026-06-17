@@ -1,0 +1,13 @@
+# 排除 Python 虛擬環境
+venv/
+.venv/
+
+# 排除敏感金鑰設定檔
+.env
+
+# 排除 Python 快取編譯檔
+__pycache__/
+*.pyc
+
+# 排除防盜系統產生的歷史照片
+static/intruder_*.jpg
