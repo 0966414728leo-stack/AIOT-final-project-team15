@@ -28,9 +28,48 @@
 # 軟體安裝與部署步驟
 
 ## 1. 環境初始化
+將專案下載至樹莓派，並建立獨立的虛擬環境以安裝套件：
 ```bash
 git clone <你的 GitHub 倉庫網址>
 cd <專案資料夾名稱>
+
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
+
+## 2. LINE 官方金鑰取得步驟
+1. 瀏覽並登入 LINE Developers Console
+2. 建立一個 Provider，並在建立一個 **Messaging API** 類型的新 Channel
+3. 取得 Channel Secret 與 User ID
+4. 取得 Channel Access Token
+
+## 3. ngrok 固定網址申請步驟
+1. 瀏覽並登入 ngrok Dashboard。
+2. 在左側選單中點擊 **Cloud Edge** -> **Domains**。
+3. 點擊 **Create Domain** 或 **New Domain** 建立一組免費的固定靜態網域（例如：`tattoo-bagpipe-mug.ngrok-free.dev`）。
+4. 記下這組專屬的網址名稱。
+
+## 4. 環境變數與金鑰配置
+1. 使用文字編輯器創建 `.env`，按照.env.example的格式將上述步驟取得的資料準確填入：
+   ```text
+   LINE_CHANNEL_ACCESS_TOKEN=貼上你的_Channel_Access_Token
+   LINE_CHANNEL_SECRET=貼上你的_Channel_Secret
+   LINE_USER_ID=貼上你的_Your_user_ID
+   NGROK_BASE_URL=[https://貼上你的固定網址.ngrok-free.dev](https://貼上你的固定網址.ngrok-free.dev)
+   ```
+
+## 5. 啟動系統與 Webhook 綁定
+1. **啟動網路穿透**：在樹莓派終端機執行以下指令（請替換為你的固定網址），讓外部網路可以連入本地 5000 埠：
+   ```bash
+   ngrok http --url=你的固定網址.ngrok-free.dev 5000
+   ```
+2. **設定 LINE Webhook**：
+   - 回到 LINE Developers Console 的 **Messaging API** 頁籤。
+   - 找到 **Webhook URL** 欄位，點擊 Edit 輸入：`https://你的固定網址.ngrok-free.dev/callback`
+   - 點擊 **Update** 儲存，接著點擊 **Verify** 進行連線測試，必須顯示 **Success**。
+   - 務必將下方的 **Use webhook** 功能切換為開啟（ON）狀態。
+3. **執行主程式**：保持 ngrok 視窗運行，開啟新終端機視窗並進入虛擬環境，執行以下指令啟動保全系統：
+   ```bash
+   python app.py
+   ```
