@@ -60,9 +60,9 @@ pip install -r requirements.txt
    ```
 
 ## 5. 啟動系統與 Webhook 綁定
-1. **啟動網路穿透**：在樹莓派終端機執行以下指令（請替換為你的固定網址），讓外部網路可以連入本地 5000 埠：
+1. **啟動網路穿透**：在樹莓派終端機執行以下指令並替換為你的固定網址，讓外部網路可以連入本地 5000 埠：
    ```bash
-   ngrok http --url=你的固定網址.ngrok-free.dev 5000
+   ngrok http 5000
    ```
 2. **設定 LINE Webhook**：
    - 回到 LINE Developers Console 的 **Messaging API** 頁籤。
